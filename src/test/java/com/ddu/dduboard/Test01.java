@@ -60,6 +60,14 @@ public class Test01 {
 			Question q = qoptional.get(); // 참이면 글 꺼내기
 			assertEquals("sbb가 무엇인가요?", q.getSubject());
 		}
-		
 	}
+	@Test
+	@DisplayName("질문글 제목으로 조회 (SELECT) findBySubject()")
+	public void testJpa4() {
+		Question question = questionRepository.findBySubject("스프링 부트 모델 질문입니다.");
+		// SELECT * FROM question WHERE subject='스프링 부트 모델 질문입니다.'
+		
+		assertEquals(2,question.getId() );
+	}
+			
 }
