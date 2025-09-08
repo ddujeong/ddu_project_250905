@@ -1,7 +1,9 @@
-package com.ddu.dduboard.entity;
+package com.ddu.dduboard.question;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.ddu.dduboard.answer.Answer;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
