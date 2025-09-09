@@ -8,9 +8,13 @@
 	<title>Ddu Q&A Board!</title>
 </head>
 <body>
+	<!-- 네비게이션 바 START-->
+	<nav th:replace="~{navbar :: navbarFragment}"></nav>
+	<!-- 네비게이션 바 END -->
 	<!-- 기본 탬플릿 안에 삽입될 내용 START -->
 	<th:block layout:fragment="content"></th:block>
-	
 	<!-- 기본 탬플릿 안에 삽입될 내용 END -->
+	<!-- Bootstrap JS -->
+	<script th:src="@{/bootstrap.min.js}"></script>
 </body>
 </html>
