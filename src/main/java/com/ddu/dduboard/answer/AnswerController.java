@@ -4,6 +4,7 @@ package com.ddu.dduboard.answer;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class AnswerController {
 	@Autowired
 	private UserService userService;
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value = "/create/{id}")
 	public String createAnswer(Model model, @PathVariable("id") Integer id,@Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
 		Question question = questionService.getQuestion(id);

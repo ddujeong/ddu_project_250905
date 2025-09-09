@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -61,6 +62,7 @@ public class QuestionController {
 		
 		return"question_detail";
 	}
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping(value = "/create") // 질문등록 폼만 매핑해주는 메서드(get)
 	public String questionCreate(QuestionForm questionForm) {
 		return"question_form";
@@ -74,6 +76,8 @@ public class QuestionController {
 		
 		return"redirect:/question/list";
 	} validation 하기 전! */ 
+	
+	@PreAuthorize("isAuthenticated()") // 로그인 한 유저만(인증받은 유저) 해당 메서드가 실행되게 하는 annotation
 	@PostMapping(value = "/create") // 질문 내용을 DB에 저장하는 메서드(post)
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 		SiteUser siteUser = userService.getUser(principal.getName());
