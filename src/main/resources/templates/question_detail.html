@@ -33,9 +33,11 @@
 	<!-- 답변 반복 끝 -->
 	<!-- 답변 작성 -->
 	<form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
+		<!--유효성 체크  
 		<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
 			<div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
-		</div>
+		</div>-->
+		<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 		<textarea rows="10" th:field="*{content}" class="form-control"></textarea>
 		<input type="submit" value="답변 등록" class="btn btn-primary my-2">
 	</form>

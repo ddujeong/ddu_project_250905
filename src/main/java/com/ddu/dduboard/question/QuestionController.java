@@ -32,7 +32,7 @@ public class QuestionController {
         this.questionRepository = questionRepository;
     }
 	
-	@GetMapping(value = "")
+	@GetMapping(value = "/")
 	public String root() {
 		// url 기본 루트 url 설정 (-> 서버 start 시 리스트로 이동)
 		return "redirect:/question/list";
