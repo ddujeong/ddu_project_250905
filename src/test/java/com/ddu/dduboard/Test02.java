@@ -18,6 +18,7 @@ import com.ddu.dduboard.answer.Answer;
 import com.ddu.dduboard.answer.AnswerRepository;
 import com.ddu.dduboard.question.Question;
 import com.ddu.dduboard.question.QuestionRepository;
+import com.ddu.dduboard.question.QuestionService;
 
 @SpringBootTest
 public class Test02 {
@@ -26,6 +27,8 @@ public class Test02 {
 	QuestionRepository questionRepository;
 	@Autowired
 	AnswerRepository answerRepository;
+	@Autowired
+	QuestionService questionService;
 	
 	@Test
 	@DisplayName("질문글 제목 수정(UPDATE) finById -> save() ")
@@ -106,6 +109,16 @@ public class Test02 {
 		
 		assertEquals(1, aList.size()); // 답변리스트의 사이즈가 1개인지 확인
 		assertEquals("네 자동으로 생성됩니다.", aList.get(0).getContent()); // 답변리스트의 첫번째 답변의 글내용을 가져옴
+	}
+	@Test
+	@DisplayName("더미 데이터 삽입")
+	public void testJpa6() {
+		for (int i = 0; i <=300; i++) {
+			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String content = "연습내용 더미 데이터 입니다!~!";
+			questionService.create(subject, content);
+		}
+		
 	}
 
 }

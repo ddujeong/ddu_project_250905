@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="http://www.thymeleaf.org" >
 <nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="/">Ddu Q&A Board</a>
@@ -13,6 +13,9 @@
 		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			<li class="nav-item">
 				<a class="nav-link" href="#">로그인</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" th:href="@{/user/signup}">회원가입</a>
 			</li>
 		</ul>
 	</div>

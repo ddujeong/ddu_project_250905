@@ -18,9 +18,10 @@ public class QuestionService {
 	private final QuestionRepository questionRepository;
 	// @RequiredArgsConstructor 에 의해 생성자 방식으로 주입된 questionRepository 
 
-	public List<Question> getList(){
+	 public List<Question> getList(){
 		return questionRepository.findAll();
-	}
+	 } 
+	 
 	public Question getQuestion(Integer id){
 		Optional<Question> qOptional =questionRepository.findById(id);
 		
@@ -39,4 +40,10 @@ public class QuestionService {
 		questionRepository.save(question);
 		
 	}
+//	// 페이지 리스트
+//	public Page<Question> getList(int page){
+//		Pageable pageable = PageRequest.of(page, 10);
+//		// page는 조회할 번호 10은 한페이지에 보여줄 게시물의 갯수
+//		return questionRepository.findAll(pageable);
+//	}
 }
