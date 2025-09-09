@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.ddu.dduboard.DataNotFoundException;
+import com.ddu.dduboard.user.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,11 +32,12 @@ public class QuestionService {
 			throw new DataNotFoundException("question not found");
 		}
 	}
-	public void create(String subject, String content) {
+	public void create(String subject, String content, SiteUser user) {
 		Question question = new Question();
 		question.setSubject(subject);
 		question.setContent(content);
 		question.setCreatedate(LocalDateTime.now());
+		question.setAuthor(user);
 		
 		questionRepository.save(question);
 		

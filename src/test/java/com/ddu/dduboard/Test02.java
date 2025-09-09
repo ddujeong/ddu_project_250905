@@ -19,6 +19,8 @@ import com.ddu.dduboard.answer.AnswerRepository;
 import com.ddu.dduboard.question.Question;
 import com.ddu.dduboard.question.QuestionRepository;
 import com.ddu.dduboard.question.QuestionService;
+import com.ddu.dduboard.user.SiteUser;
+import com.ddu.dduboard.user.UserService;
 
 @SpringBootTest
 public class Test02 {
@@ -29,6 +31,8 @@ public class Test02 {
 	AnswerRepository answerRepository;
 	@Autowired
 	QuestionService questionService;
+	@Autowired
+	UserService userService;
 	
 	@Test
 	@DisplayName("질문글 제목 수정(UPDATE) finById -> save() ")
@@ -113,10 +117,12 @@ public class Test02 {
 	@Test
 	@DisplayName("더미 데이터 삽입")
 	public void testJpa6() {
+		SiteUser siteUser = userService.getUser("tiger");
 		for (int i = 0; i <=300; i++) {
 			String subject = String.format("테스트 데이터입니다:[%03d]", i);
 			String content = "연습내용 더미 데이터 입니다!~!";
-			questionService.create(subject, content);
+			
+			questionService.create(subject, content,siteUser);
 		}
 		
 	}

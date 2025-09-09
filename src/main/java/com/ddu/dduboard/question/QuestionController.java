@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ddu.dduboard.answer.AnswerForm;
+import com.ddu.dduboard.user.SiteUser;
+import com.ddu.dduboard.user.UserService;
 
 import jakarta.validation.Valid;
 
@@ -29,6 +31,9 @@ public class QuestionController {
 
 	@Autowired
 	private QuestionService questionService;
+	
+	@Autowired
+	private UserService userService;
 
     QuestionController(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
@@ -71,11 +76,12 @@ public class QuestionController {
 	} validation 하기 전! */ 
 	@PostMapping(value = "/create") // 질문 내용을 DB에 저장하는 메서드(post)
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
-		
+		SiteUser siteUser = userService.getUser(principal.getName());
+		// 현재 로그인 한 유저의 username 으로 SiteUser 반환받기
 		if (bindingResult.hasErrors()) { // 참이면 유효성 체크에서 에러 발생!
 			return "question_form"; // 에러 발생 시 질문 등록 폼으로 다시 이동
 		}
-		questionService.create(questionForm.getSubject(), questionForm.getContent());
+		questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
 		
 		return"redirect:/question/list"; // 질문 리스트로 이동 -> 반드시 redirect!
 	}
