@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ddu.dduboard.answer.Answer;
+import com.ddu.dduboard.user.SiteUser;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -41,4 +43,7 @@ public class Question {
 	
 	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE) // 1(질문) : N(대답) 관계 , 질문이 삭제 시 연관 된 답변도 삭제
 	private List<Answer> answerList;
+	
+	@ManyToOne
+	private SiteUser author;
 }

@@ -1,5 +1,6 @@
 package com.ddu.dduboard.question;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,6 @@ public class QuestionController {
         this.questionRepository = questionRepository;
     }
 	
-	@GetMapping(value = "/")
-	public String root() {
-		// url 기본 루트 url 설정 (-> 서버 start 시 리스트로 이동)
-		return "redirect:/question/list";
-	}
 	@GetMapping(value = "/list")
 	// @ResponseBody // 리턴값의 문자열이 그대로 뷰에 찍힘
 	public String list(Model model, @RequestParam(value ="page", defaultValue = "0")int page) {
@@ -74,7 +70,7 @@ public class QuestionController {
 		return"redirect:/question/list";
 	} validation 하기 전! */ 
 	@PostMapping(value = "/create") // 질문 내용을 DB에 저장하는 메서드(post)
-	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 		
 		if (bindingResult.hasErrors()) { // 참이면 유효성 체크에서 에러 발생!
 			return "question_form"; // 에러 발생 시 질문 등록 폼으로 다시 이동

@@ -3,6 +3,7 @@ package com.ddu.dduboard.answer;
 import java.time.LocalDateTime;
 
 import com.ddu.dduboard.question.Question;
+import com.ddu.dduboard.user.SiteUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,4 +37,7 @@ public class Answer {
 	
 	@ManyToOne // N(답변) : 1(질문) 관계 
 	private Question question;
+	
+	@ManyToOne
+	private SiteUser author;
 }
