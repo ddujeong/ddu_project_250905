@@ -89,5 +89,14 @@ public class AnswerController {
 		answerService.delete(answer);
 		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId()) ; // 리스트로 이동
 	}
+	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
+	@GetMapping(value = "/vote/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
+	public String answerVote(@PathVariable("id") Integer id, Principal principal) {
+		Answer answer =answerService.getAnswer(id);
+		SiteUser siteUser =userService.getUser(principal.getName());
+		
+		answerService.vote(answer, siteUser);
+		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId()) ; // 리스트로 이동
+	}
 }
 

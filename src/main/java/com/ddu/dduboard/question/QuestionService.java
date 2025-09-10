@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.ddu.dduboard.DataNotFoundException;
@@ -57,5 +58,17 @@ public class QuestionService {
 	}
 	public void delete(Question question) {
 		questionRepository.delete(question);
+	}
+	public void vote(SiteUser siteUser, Question question) {
+		question.getVoter().add(siteUser);
+		questionRepository.save(question);
+	}
+	
+	public void hit(Integer id) {
+		questionRepository.updateHit(id);
+	}
+	public void hit1(Question question) {
+		question.setHit(question.getHit()+1);
+		questionRepository.save(question);
 	}
 }

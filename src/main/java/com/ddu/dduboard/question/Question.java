@@ -2,6 +2,7 @@ package com.ddu.dduboard.question;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import com.ddu.dduboard.answer.Answer;
 import com.ddu.dduboard.user.SiteUser;
@@ -12,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
@@ -48,4 +50,9 @@ public class Question {
 	private SiteUser author;
 	
 	private LocalDateTime modifydate;
+	
+	@ManyToMany // N(질문) : N(추천자)
+	private Set<SiteUser> voter; // 추천한 유저가 중복 없이 여러 명의 유저를 저장 하기 위해 Set 사용 -> 유저의 수 -> 추천수
+	
+	private Integer hit;
 }
