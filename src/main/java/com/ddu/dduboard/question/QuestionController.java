@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.ddu.dduboard.answer.AnswerForm;
 import com.ddu.dduboard.user.SiteUser;
@@ -88,5 +90,20 @@ public class QuestionController {
 		questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
 		
 		return"redirect:/question/list"; // 질문 리스트로 이동 -> 반드시 redirect!
+	}
+	@PreAuthorize("isAuthenticated()") // 로그인 한 유저만(인증받은 유저) 해당 메서드가 실행되게 하는 annotation
+	@GetMapping(value = "/modify/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
+	public String modify(@PathVariable("id") Integer id,QuestionForm questionForm, Principal principal) {
+		Question question =questionService.getQuestion(id);
+		
+		if (!question.getAuthor().getUsername().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+		}
+		
+		// question_form 에 questionForm에 subject와 content를 value 로 출력하는 기능이 이미 구현되어 있으므로 
+		// 해당 폼을 재사용하기 위해 questionForm에 question 의 필드값을 저장하여 전송
+		questionForm.setSubject(question.getSubject());
+		questionForm.setContent(question.getContent());
+		return"question_form";
 	}
 }

@@ -8,10 +8,19 @@
 			th:text ="${question.content}" ></div>
 			<div class="d-flex justify-content-end">
 				<div class="badge bg-light text-dark p-2 text-start">
+				<div class="mb-2">
+					<span th:if="${question.author != null}" th:text="${question.author.username}"></span>
+				</div>
 					<div th:text="${#temporals.format(question.createdate,
 					'yyyy-MM-dd HH:mm')}"></div>
 				</div>
 			</div>
+		<div class="my-3">
+			<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary" 
+			sec:authorize="isAuthenticated()" th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}" 
+			th:text="수정" >
+			</a>
+		</div>
 		</div>
 	</div>
 	<!-- 답변 갯수 표시 -->
@@ -24,6 +33,9 @@
 				th:text="${answer.content}"></div>
 			<div class="d-flex justify-content-end">
 				<div class="badge bg-light text-dark p-2 text-start">
+				<div class="mb-2">
+					<span th:if="${question.author != null}" th:text="${question.author.username}"></span>
+				</div>
 					<div th:text="${#temporals.format(answer.createdate,
 					'yyyy-MM-dd HH:mm')}"></div>
 				</div>
