@@ -83,7 +83,7 @@ public class QuestionController {
 	@PostMapping(value = "/create") // 질문 내용을 DB에 저장하는 메서드(post)
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 		SiteUser siteUser = userService.getUser(principal.getName());
-		// 현재 로그인 한 유저의 username 으로 SiteUser 반환받기
+		// 현재 로그인 한 유저의 userName 으로 SiteUser 반환받기
 		if (bindingResult.hasErrors()) { // 참이면 유효성 체크에서 에러 발생!
 			return "question_form"; // 에러 발생 시 질문 등록 폼으로 다시 이동
 		}
@@ -91,19 +91,46 @@ public class QuestionController {
 		
 		return"redirect:/question/list"; // 질문 리스트로 이동 -> 반드시 redirect!
 	}
-	@PreAuthorize("isAuthenticated()") // 로그인 한 유저만(인증받은 유저) 해당 메서드가 실행되게 하는 annotation
+	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
 	@GetMapping(value = "/modify/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
-	public String modify(@PathVariable("id") Integer id,QuestionForm questionForm, Principal principal) {
+	public String modify(@PathVariable("id") Integer id, QuestionForm questionForm, Principal principal) {
 		Question question =questionService.getQuestion(id);
 		
 		if (!question.getAuthor().getUsername().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
 		}
 		
-		// question_form 에 questionForm에 subject와 content를 value 로 출력하는 기능이 이미 구현되어 있으므로 
+		// question_form 에 questionForm에 subject 와 content 를 value 로 출력하는 기능이 이미 구현되어 있으므로 
 		// 해당 폼을 재사용하기 위해 questionForm에 question 의 필드값을 저장하여 전송
 		questionForm.setSubject(question.getSubject());
 		questionForm.setContent(question.getContent());
-		return"question_form";
+		
+		return "question_form";
+	}
+	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
+	@PostMapping(value = "/modify/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
+	public String modify(@PathVariable("id") Integer id, @Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
+		if (bindingResult.hasErrors()) { // 에러가 있으면 다시 수정폼으로 이동
+			return"question_form";
+		}
+		Question question =questionService.getQuestion(id); // 질문글의 아이디로 질뮨글(원본)을 불러옴
+		
+		if (!question.getAuthor().getUsername().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+		}
+		
+		questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
+		return String.format("redirect:/question/detail/%s",id);
+	}
+	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
+	@GetMapping(value = "/delete/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
+	public String delete(@PathVariable("id") Integer id, Principal principal) {
+		Question question =questionService.getQuestion(id); // 질문글의 아이디로 질뮨글(원본)을 불러옴
+		
+		if (!question.getAuthor().getUsername().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
+		}
+		questionService.delete(question);
+		return"redirect:/";
 	}
 }

@@ -49,4 +49,13 @@ public class QuestionService {
 //		// page는 조회할 번호 10은 한페이지에 보여줄 게시물의 갯수
 //		return questionRepository.findAll(pageable);
 //	}
+	public void modify(Question question, String subject, String content) {
+		question.setSubject(subject);
+		question.setContent(content);
+		question.setModifydate(LocalDateTime.now());
+		questionRepository.save(question);
+	}
+	public void delete(Question question) {
+		questionRepository.delete(question);
+	}
 }
