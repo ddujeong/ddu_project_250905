@@ -7,6 +7,13 @@
 			<div class="card-text" style="white-space: pre-line;"
 			th:text ="${question.content}" ></div>
 			<div class="d-flex justify-content-end">
+				<!-- 질문 수정일시 시작-->
+				<div th:if="${question.modifydate != null}" class="badge bg-light text-dark p-2 text-start mx-3"> 
+				<div class="mb-2">modified at</div>
+				<div th:text="${#temporals.format(question.modifydate,'yyyy-MM-dd HH:mm')}"></div>
+				</div>
+				<!-- 질문 수정일시 끝-->
+				<!-- 질문 글쓴이 / 등록일 시작  -->
 				<div class="badge bg-light text-dark p-2 text-start">
 				<div class="mb-2">
 					<span th:if="${question.author != null}" th:text="${question.author.username}"></span>
@@ -14,7 +21,9 @@
 					<div th:text="${#temporals.format(question.createdate,
 					'yyyy-MM-dd HH:mm')}"></div>
 				</div>
+				<!-- 질문 글쓴이 / 등록일 끝 -->
 			</div>
+			<!-- 질문 수정 / 삭제 버튼 시작 -->
 		<div class="my-3">
 			<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary" 
 			sec:authorize="isAuthenticated()" th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}" 
@@ -23,6 +32,7 @@
 			sec:authorize="isAuthenticated()" th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
 			th:text="삭제"></a>
 		</div>
+			<!-- 질문 수정/ 삭제 버튼 끝 -->
 		</div>
 	</div>
 	<!-- 답변 갯수 표시 -->
@@ -34,6 +44,13 @@
 			<div class="card-text" style="white-space: pre-line;"
 				th:text="${answer.content}"></div>
 			<div class="d-flex justify-content-end">
+				<!-- 답변 수정일시 시작 -->
+				<div th:if="${answer.modifydate != null}" class="badge bg-light text-dark p-2 text-start mx-3"> 
+				<div class="mb-2">modified at</div>
+				<div th:text="${#temporals.format(answer.modifydate,'yyyy-MM-dd HH:mm')}"></div>
+				</div>
+				<!-- 답변 수정일시 끝 -->
+				<!-- 답변 글쓴이 / 등록일 시작  -->
 				<div class="badge bg-light text-dark p-2 text-start">
 				<div class="mb-2">
 					<span th:if="${answer.author != null}" th:text="${answer.author.username}"></span>
@@ -41,7 +58,18 @@
 					<div th:text="${#temporals.format(answer.createdate,
 					'yyyy-MM-dd HH:mm')}"></div>
 				</div>
+				<!-- 답변 글쓴이 / 등록일 끝 -->
 			</div>
+			<!-- 답변 수정 / 삭제 버튼 시작 -->
+			<div class="my-3">
+				<a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary" 
+				sec:authorize="isAuthenticated()" th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}" 
+				th:text="수정" ></a>
+				<a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}" class="delete btn btn-sm btn-outline-secondary"
+				sec:authorize="isAuthenticated()" th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+				th:text="삭제"></a>
+			</div>
+			<!-- 답변 수정/ 삭제 버튼 끝 -->
 		</div>
 	</div>
 	<!-- 답변 반복 끝 -->

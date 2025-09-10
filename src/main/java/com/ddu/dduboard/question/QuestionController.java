@@ -109,7 +109,7 @@ public class QuestionController {
 	}
 	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
 	@PostMapping(value = "/modify/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
-	public String modify(@PathVariable("id") Integer id, @Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
+	public String questionModify(@PathVariable("id") Integer id, @Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 		if (bindingResult.hasErrors()) { // 에러가 있으면 다시 수정폼으로 이동
 			return"question_form";
 		}
@@ -124,13 +124,13 @@ public class QuestionController {
 	}
 	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
 	@GetMapping(value = "/delete/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
-	public String delete(@PathVariable("id") Integer id, Principal principal) {
+	public String questionDelete(@PathVariable("id") Integer id, Principal principal) {
 		Question question =questionService.getQuestion(id); // 질문글의 아이디로 질뮨글(원본)을 불러옴
 		
 		if (!question.getAuthor().getUsername().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
 		}
 		questionService.delete(question);
-		return"redirect:/";
+		return"redirect:/"; // 리스트로 이동
 	}
 }
