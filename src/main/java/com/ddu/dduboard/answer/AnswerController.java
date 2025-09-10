@@ -98,5 +98,14 @@ public class AnswerController {
 		answerService.vote(answer, siteUser);
 		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId()) ; // 리스트로 이동
 	}
+	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
+	@GetMapping(value = "/disvote/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
+	public String answerDisVote(@PathVariable("id") Integer id, Principal principal) {
+		Answer answer =answerService.getAnswer(id);
+		SiteUser siteUser =userService.getUser(principal.getName());
+		
+		answerService.disvote(answer, siteUser);
+		return String.format("redirect:/question/detail/%s", answer.getQuestion().getId()) ; // 리스트로 이동
+	}
 }
 

@@ -63,6 +63,10 @@ public class QuestionService {
 		question.getVoter().add(siteUser);
 		questionRepository.save(question);
 	}
+	public void disvote(SiteUser siteUser, Question question) {
+		question.getDisvoter().add(siteUser);
+		questionRepository.save(question);
+	}
 	
 	public void hit(Integer id) {
 		questionRepository.updateHit(id);

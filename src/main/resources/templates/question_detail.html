@@ -28,6 +28,9 @@
 			<!-- 질문 추천 버튼 -->
 			<a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" th:data-uri="@{|/question/vote/${question.id}|}" >추천
 			<span class="badge rounded-pill bg-success" th:text="${#lists.size(question.voter)}"></span></a>
+			<!-- 질문 비추천 버튼 -->
+			<a href="javascript:void(0);" class="disrecommend btn btn-sm btn-outline-secondary" th:data-uri="@{|/question/disvote/${question.id}|}" >비추천
+			<span class="badge rounded-pill bg-danger" th:text="${#lists.size(question.disvoter)}"></span></a>
 			
 			<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary" 
 			sec:authorize="isAuthenticated()" th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}" 
@@ -69,6 +72,9 @@
 				<!-- 질문 추천 버튼 -->
 				<a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" th:data-uri="@{|/answer/vote/${answer.id}|}" >추천
 				<span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.voter)}"></span></a>
+				<!-- 질문 비추천 버튼 -->
+				<a href="javascript:void(0);" class="disrecommend btn btn-sm btn-outline-secondary" th:data-uri="@{|/answer/disvote/${answer.id}|}" >비추천
+				<span class="badge rounded-pill bg-danger" th:text="${#lists.size(answer.disvoter)}"></span></a>
 				
 				<a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary" 
 				sec:authorize="isAuthenticated()" th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}" 
@@ -108,6 +114,14 @@ const recommend_elements = document.getElementsByClassName("recommend");
 Array.from(recommend_elements).forEach(function(element) {
 	element.addEventListener('click',function(){
 		if(confirm("정말로 추천하시겠습니까?")) {
+			location.href = this.dataset.uri;
+		};
+	});
+});
+const disrecommend_elements = document.getElementsByClassName("disrecommend");
+Array.from(disrecommend_elements).forEach(function(element) {
+	element.addEventListener('click',function(){
+		if(confirm("정말 비추천하시겠습니까?")) {
 			location.href = this.dataset.uri;
 		};
 	});

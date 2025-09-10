@@ -54,5 +54,8 @@ public class Question {
 	@ManyToMany // N(질문) : N(추천자)
 	private Set<SiteUser> voter; // 추천한 유저가 중복 없이 여러 명의 유저를 저장 하기 위해 Set 사용 -> 유저의 수 -> 추천수
 	
+	@ManyToMany // N(질문) : N(추천자)
+	private Set<SiteUser> disvoter; // 추천한 유저가 중복 없이 여러 명의 유저를 저장 하기 위해 Set 사용 -> 유저의 수 -> 추천수
+	
 	private Integer hit;
 }

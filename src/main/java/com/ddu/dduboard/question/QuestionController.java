@@ -144,4 +144,13 @@ public class QuestionController {
 		questionService.vote(siteUser, question);
 		return String.format("redirect:/question/detail/%s", id) ; // 리스트로 이동
 	}
+	@PreAuthorize("isAuthenticated()") // form -> action 으로 넘어오지 않으면 권한 인증이 안됨
+	@GetMapping(value = "/disvote/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
+	public String questionDisVote(@PathVariable("id") Integer id, Principal principal) {
+		Question question =questionService.getQuestion(id); // 질문글의 아이디로 질뮨글(원본)을 불러옴
+		SiteUser siteUser =userService.getUser(principal.getName());
+
+		questionService.disvote(siteUser, question);
+		return String.format("redirect:/question/detail/%s", id) ; // 리스트로 이동
+	}
 }
