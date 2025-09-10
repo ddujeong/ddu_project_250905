@@ -19,6 +19,7 @@ public class QuestionService {
 	private final QuestionRepository questionRepository;
 	// @RequiredArgsConstructor 에 의해 생성자 방식으로 주입된 questionRepository 
 
+	// 페이징 X 일반 보드리스트 불러오기
 	 public List<Question> getList(){
 		return questionRepository.findAll();
 	 } 

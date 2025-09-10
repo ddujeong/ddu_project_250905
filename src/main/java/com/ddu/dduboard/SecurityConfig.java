@@ -13,7 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration // 스프링 부트의 환경설정 파일로 명시하는 annotation
 @EnableWebSecurity // 모든 요청 url이 스프링 시큐리티의 제어를 받도록 만드는 annotation
-@EnableMethodSecurity(prePostEnabled = true) // principal 이 null 일떄 로그인 페이지로 강제 이동 시키는 어노테이션 작동
+@EnableMethodSecurity(prePostEnabled = true) // principal(로그인 된 회원정보) 이 null 일떄 로그인 페이지로 강제 이동 시키는 어노테이션 작동
 public class SecurityConfig {
 	
 	@Bean
@@ -27,8 +27,8 @@ public class SecurityConfig {
 					.defaultSuccessUrl("/")) // 로그인 성공 시 이동할 페이지 ("/" -> 루트)로 지정
 					.logout((logout) -> logout
 							.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-							.logoutSuccessUrl("/")
-							.invalidateHttpSession(true))
+							.logoutSuccessUrl("/") // 로그아웃 성공 시 이동할 페이지 
+							.invalidateHttpSession(true)) // 세션 삭제
 			;
 		return http.build();
 	}
