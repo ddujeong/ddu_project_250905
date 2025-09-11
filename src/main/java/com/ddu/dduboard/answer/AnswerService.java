@@ -20,7 +20,7 @@ public class AnswerService {
 	@Autowired
 	private AnswerRepository answerRepository;
 	
-	public void create(Question question, String content, SiteUser author){
+	public Answer create(Question question, String content, SiteUser author){
 		Answer answer = new Answer();
 		answer.setContent(content);
 		answer.setCreatedate(LocalDateTime.now());
@@ -28,6 +28,7 @@ public class AnswerService {
 		answer.setAuthor(author);
 		
 		answerRepository.save(answer);
+		return answer; //DB에 등록한 답변을 바로 반환
 	}
 	public Answer getAnswer(Integer id) {
 		Optional<Answer> _answer = answerRepository.findById(id);

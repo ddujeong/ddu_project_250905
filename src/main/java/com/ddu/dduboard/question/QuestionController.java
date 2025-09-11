@@ -46,19 +46,21 @@ public class QuestionController {
 	// @ResponseBody // 리턴값의 문자열이 그대로 뷰에 찍힘
 	public String list(Model model, @RequestParam(value ="page", defaultValue = "0")int page) {
 		// List<Question> questionList = questionRepository.findAll();
-		 List<Question> questionList = questionService.getList();
+		int pageSize = 10;
+		
+		//  List<Question> questionList = questionService.getList();
 		// SELECT * FROM question
 		
-		//Page<Question> paging = questionService.getList(page);
-		// 게시글 10개씩 자른 리스트 -> 페이지당 10개 -> 2페이지에 해당하는 글 10개
+		Page<Question> paging = questionService.getPageList(page);
+		// Page<Question> 객체: 요청한 페이지(page) 번호에 해당하는 10개 게시글을 담음
 		
 		//model.addAttribute("paging",paging);
-		 model.addAttribute("questionList",questionList);
+		 model.addAttribute("paging",paging);
 		
 		return "question_list";
 	}
 	@GetMapping(value = "/detail/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
-	public String detail(Model model ,@PathVariable("id") Integer id, AnswerForm answerForm) {
+	public String detail(Model model ,@PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value ="page", defaultValue = "0") int page ) {
 		questionService.hit(id);
 		Question question =questionService.getQuestion(id);
 		//questionService.hit1(question);

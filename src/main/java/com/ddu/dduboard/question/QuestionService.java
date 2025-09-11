@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +48,21 @@ public class QuestionService {
 		questionRepository.save(question);
 		
 	}
-//	// 페이지 리스트
-//	public Page<Question> getList(int page){
-//		Pageable pageable = PageRequest.of(page, 10);
-//		// page는 조회할 번호 10은 한페이지에 보여줄 게시물의 갯수
-//		return questionRepository.findAll(pageable);
-//	}
+	// 페이지 리스트
+	public Page<Question> getPageList(int page){
+		int size = 10; // 1페이지당 글 10개씩 출력
+		int startRow = page *10; // * 페이징 의 첫번째 글 넘버 * 첫 페이지 page=0 -> 0*10 = 0 / 두번째 페이지 page =1 -> 1*10 = 10
+		int endRow = (startRow) + size; // * 페이징의 마지막 글 넘버 * 첫번째 페이지  0 +10 = 10 / 두번째 페이지 10 + 10 = 20
+		List<Question> pageQuestionList = questionRepository.findQuestionsWithPaging(startRow, endRow);
+		
+		Long totalQuestion = questionRepository.count(); // DB 의 모든 글 갯수 가져오기
+		
+		// (10개씩 뽑아온 리스트 ,(실제유저가 선택한 페이지 , 페이지의 사이즈),모든 글의 갯수)
+		Page<Question> pagingList = new PageImpl<>(pageQuestionList, PageRequest.of(page, size), totalQuestion);
+		
+		return pagingList;
+	}
+	
 	public void modify(Question question, String subject, String content) {
 		question.setSubject(subject);
 		question.setContent(content);

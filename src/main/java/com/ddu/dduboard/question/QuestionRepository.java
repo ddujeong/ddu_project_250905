@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	
-	//ublic Question findBySubject(String subject);
+	// public Question findBySubject(String subject);
 	
 	public Optional<Question> findBySubject(String subject);
 	
@@ -26,5 +26,11 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	public int updateHit(@Param("id") Integer id);
 	
 	// 페이징 관련 메서드들 
-	// public Page<Question> findAll(Pageable pageable);
+	@Query( value = "SELECT * FROM ( " +
+	                 " SELECT q.*, ROWNUM rnum FROM ( " +
+	                 "   SELECT * FROM question ORDER BY createdate DESC " +
+	                 " ) q WHERE ROWNUM <= :endRow " +
+	                 ") WHERE rnum > :startRow", nativeQuery = true)
+	List<Question> findQuestionsWithPaging(@Param("startRow") int startRow,
+	                                           @Param("endRow") int endRow);
 }
