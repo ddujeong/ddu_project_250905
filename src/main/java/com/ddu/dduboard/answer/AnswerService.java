@@ -2,14 +2,19 @@ package com.ddu.dduboard.answer;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ddu.dduboard.DataNotFoundException;
 import com.ddu.dduboard.question.Question;
+import com.ddu.dduboard.question.QuestionRepository;
 import com.ddu.dduboard.user.SiteUser;
 
 
@@ -17,8 +22,14 @@ import com.ddu.dduboard.user.SiteUser;
 @Service
 public class AnswerService {
 
+    private final QuestionRepository questionRepository;
+
 	@Autowired
 	private AnswerRepository answerRepository;
+
+    AnswerService(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
 	
 	public Answer create(Question question, String content, SiteUser author){
 		Answer answer = new Answer();
@@ -54,6 +65,22 @@ public class AnswerService {
 	public void disvote(Answer answer, SiteUser siteUser) {
 		answer.getDisvoter().add(siteUser);
 		answerRepository.save(answer);
+	}
+	public Page<Answer> getAnswerPageList(int page, int id){
+		
+		int size = 10; // 1페이지당 글 10개씩 출력
+		int startRow = page *10; // * 페이징 의 첫번째 글 넘버 * 첫 페이지 page=0 -> 0*10 = 0 / 두번째 페이지 page =1 -> 1*10 = 10
+		int endRow = (startRow) + size; // * 페이징의 마지막 글 넘버 * 첫번째 페이지  0 +10 = 10 / 두번째 페이지 10 + 10 = 20
+		
+		List<Answer> pageAnswerList = answerRepository.findAnswersWithPaging(startRow, endRow);
+		Long totalAnswer = answerRepository.count();
+		
+		Page<Answer> pagingList = new PageImpl<>(pageAnswerList, PageRequest.of(page, size), totalAnswer);
+		
+		return pagingList;
+		
+		
+		
 	}
 	
 }

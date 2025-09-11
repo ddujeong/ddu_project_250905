@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ddu.dduboard.answer.Answer;
 import com.ddu.dduboard.answer.AnswerForm;
+import com.ddu.dduboard.answer.AnswerService;
 import com.ddu.dduboard.user.SiteUser;
 import com.ddu.dduboard.user.UserService;
 
@@ -37,6 +39,9 @@ public class QuestionController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AnswerService answerService;
 
     QuestionController(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
@@ -44,27 +49,28 @@ public class QuestionController {
 	
 	@GetMapping(value = "/list")
 	// @ResponseBody // 리턴값의 문자열이 그대로 뷰에 찍힘
-	public String list(Model model, @RequestParam(value ="page", defaultValue = "0")int page) {
+	public String list(Model model, @RequestParam(value ="page", defaultValue = "0")int page, @RequestParam(value = "kw" , defaultValue = "") String kw) {
 		// List<Question> questionList = questionRepository.findAll();
-		int pageSize = 10;
-		
 		//  List<Question> questionList = questionService.getList();
 		// SELECT * FROM question
 		
-		Page<Question> paging = questionService.getPageList(page);
+		Page<Question> paging = questionService.getPageList(page,kw);
 		// Page<Question> 객체: 요청한 페이지(page) 번호에 해당하는 10개 게시글을 담음
 		
 		//model.addAttribute("paging",paging);
 		 model.addAttribute("paging",paging);
+		 model.addAttribute("kw",kw);
 		
 		return "question_list";
 	}
 	@GetMapping(value = "/detail/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
-	public String detail(Model model ,@PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value ="page", defaultValue = "0") int page ) {
+	public String detail(Model model ,@PathVariable("id") Integer id, Answer answer, @RequestParam(value ="page", defaultValue = "0") int page ) {
 		questionService.hit(id);
 		Question question =questionService.getQuestion(id);
 		//questionService.hit1(question);
+		Page<Answer> paging = answerService.getAnswerPageList(page, id);
 		model.addAttribute("question", question);
+		model.addAttribute("paging",paging);
 		
 		return"question_detail";
 	}
