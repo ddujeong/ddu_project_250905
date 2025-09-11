@@ -64,13 +64,13 @@ public class QuestionController {
 		return "question_list";
 	}
 	@GetMapping(value = "/detail/{id}") // 파라미터 이름 없이 값만 넘어왔을때 처리
-	public String detail(Model model ,@PathVariable("id") Integer id, Answer answer, @RequestParam(value ="page", defaultValue = "0") int page ) {
+	public String detail(Model model ,@PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value ="page", defaultValue = "0") int page ) {
 		questionService.hit(id);
 		Question question =questionService.getQuestion(id);
 		//questionService.hit1(question);
-		Page<Answer> paging = answerService.getAnswerPageList(page, id);
+		//Page<Answer> paging = answerService.getAnswerPageList(page, id);
 		model.addAttribute("question", question);
-		model.addAttribute("paging",paging);
+		//model.addAttribute("paging",paging);
 		
 		return"question_detail";
 	}

@@ -7,20 +7,11 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.ddu.dduboard.DataNotFoundException;
-import com.ddu.dduboard.answer.Answer;
 import com.ddu.dduboard.user.SiteUser;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import javassist.SerialVersionUID;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
