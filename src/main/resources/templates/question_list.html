@@ -42,7 +42,10 @@
 				<td >
 					<span th:text="${question.hit}"></span>
 				</td>
-				<td th:text="${#temporals.format(question.createdate,'yyyy-MM-dd HH:mm')}" ></td>
+				<!-- <td th:text="${#temporals.format(question.createdate,'yyyy-MM-dd HH:mm')}" ></td> -->
+				<td th:text="${#temporals.format(question.createdate.atZone(T(java.time.ZoneId).of('UTC'))
+                                                .withZoneSameInstant(T(java.time.ZoneId).of('Asia/Seoul')),
+                                                'yyyy-MM-dd HH:mm')}">등록일</td>
 			</tr>
 		</tbody>
 	</table>

@@ -10,7 +10,10 @@
 				<!-- 질문 수정일시 시작-->
 				<div th:if="${question.modifydate != null}" class="badge bg-light text-dark p-2 text-start mx-3"> 
 				<div class="mb-2">modified at</div>
-				<div th:text="${#temporals.format(question.modifydate,'yyyy-MM-dd HH:mm')}"></div>
+				<!-- <div th:text="${#temporals.format(question.modifydate,'yyyy-MM-dd HH:mm')}"></div> -->
+				<div th:text="${#temporals.format(question.modifydate.atZone(T(java.time.ZoneId).of('UTC'))
+                                                .withZoneSameInstant(T(java.time.ZoneId).of('Asia/Seoul')),
+                                                'yyyy-MM-dd HH:mm')}">등록일</div>
 				</div>
 				<!-- 질문 수정일시 끝-->
 				<!-- 질문 글쓴이 / 등록일 시작  -->
@@ -18,8 +21,11 @@
 				<div class="mb-2">
 					<span th:if="${question.author != null}" th:text="${question.author.username}"></span>
 				</div>
-					<div th:text="${#temporals.format(question.createdate,
-					'yyyy-MM-dd HH:mm')}"></div>
+					<!-- <div th:text="${#temporals.format(question.createdate,
+					'yyyy-MM-dd HH:mm')}"></div> -->
+					<div th:text="${#temporals.format(question.createdate.atZone(T(java.time.ZoneId).of('UTC'))
+                                                .withZoneSameInstant(T(java.time.ZoneId).of('Asia/Seoul')),
+                                                'yyyy-MM-dd HH:mm')}">등록일</div>
 				</div>
 				<!-- 질문 글쓴이 / 등록일 끝 -->
 			</div>
@@ -55,7 +61,11 @@
 				<!-- 답변 수정일시 시작 -->
 				<div th:if="${answer.modifydate != null}" class="badge bg-light text-dark p-2 text-start mx-3"> 
 				<div class="mb-2">modified at</div>
-				<div th:text="${#temporals.format(answer.modifydate,'yyyy-MM-dd HH:mm')}"></div>
+				<!-- <div th:text="${#temporals.format(answer.modifydate,'yyyy-MM-dd HH:mm')}"></div> -->
+				<div th:text="${#temporals.format(answer.modifydate.atZone(T(java.time.ZoneId).of('UTC'))
+                                                .withZoneSameInstant(T(java.time.ZoneId).of('Asia/Seoul')),
+                                                'yyyy-MM-dd HH:mm')}">등록일</div>
+				
 				</div>
 				<!-- 답변 수정일시 끝 -->
 				<!-- 답변 글쓴이 / 등록일 시작  -->
@@ -63,8 +73,11 @@
 				<div class="mb-2">
 					<span th:if="${answer.author != null}" th:text="${answer.author.username}"></span>
 				</div>
-					<div th:text="${#temporals.format(answer.createdate,
-					'yyyy-MM-dd HH:mm')}"></div>
+					<!-- <div th:text="${#temporals.format(answer.createdate,
+					'yyyy-MM-dd HH:mm')}"></div> -->
+					<div th:text="${#temporals.format(answer.createdate.atZone(T(java.time.ZoneId).of('UTC'))
+                                                .withZoneSameInstant(T(java.time.ZoneId).of('Asia/Seoul')),
+                                                'yyyy-MM-dd HH:mm')}">등록일</div>
 				</div>
 				<!-- 답변 글쓴이 / 등록일 끝 -->
 			</div>
